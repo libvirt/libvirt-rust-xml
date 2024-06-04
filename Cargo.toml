@@ -1,0 +1,12 @@
+[package]
+name = "virtxml"
+version = "0.1.0"
+edition = "2018"
+license = "LGPL-2.1"
+readme = "README.md"
+description = "Rust API for XML schemas used by libvirt"
+documentation = "https://docs.rs/virtxml"
+keywords = ["libvirt", "virtualization", "KVM", "QEMU", "Xen",]
+categories = ["api-bindings", "emulators",]
+repository = "https://gitlab.com/libvirt/libvirt-rust-xml"
+homepage  = "https://libvirt.org/"
