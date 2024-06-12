@@ -1,0 +1,35 @@
+
+stages:
+  - containers
+  - builds
+  - sanity_checks
+
+.native_build_job:
+  extends:
+    - .gitlab_native_build_job
+  script:
+    - export RUSTFLAGS="-D warnings"
+    - export RUSTDOCFLAGS="-D warnings"
+    - cargo test --verbose
+    - if test "$CLIPPY" = "enable"; then
+        cargo clippy --quiet --no-deps --all-targets >cargo-clippy.txt 2>&1 || true ;
+        if test -s cargo-clippy.txt; then
+          echo "clippy error, see cargo-clippy.txt artifact for details";
+          exit 1;
+        fi;
+      fi
+    - if test "$DOC" = "enable"; then
+        if ! cargo doc 2> cargo-doc.txt || ! cargo doc --features qemu 2>> cargo-doc.txt ; then
+          echo "cargo doc error, see cargo-doc.txt artifact for details";
+          exit 1;
+        fi;
+      fi
+
+  artifacts:
+    paths:
+      - cargo-clippy.txt
+      - cargo-doc.txt
+    expire_in: 1 week
+    when: on_failure
+
+include: '/ci/gitlab.yml'

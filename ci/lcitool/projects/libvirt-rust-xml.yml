@@ -1,0 +1,6 @@
+---
+packages:
+  - cargo
+  - clippy
+  - rust
+  - rust-std
